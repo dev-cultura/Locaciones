@@ -29,3 +29,7 @@ connectDB().then(() => {
     console.log(`Servidor backend corriendo en el puerto ${PORT}`);
   });
 });
+
+// Pruebas Fase 2
+const fotografiasRoutes = require('./routes/fotografias');
+app.use('/api/fotografias', fotografiasRoutes);
