@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
       .filter(Boolean);
 
     // Sin tags: devuelve todo. Con tags: AND ($all). Para OR usa $in.
-    const filtro = tags.length ? { tags: { $all: tags } } : {};
+    const filtro = tags.length ? { tags: { $in: tags } } : {};
 
     const fotos = await Fotografia.find(filtro).limit(50);
     res.json(fotos);
