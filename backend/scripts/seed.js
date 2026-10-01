@@ -1,4 +1,29 @@
+// Script de prueba: carga 20 fotos de ejemplo (URLs de picsum.photos) en Mongo para probar la búsqueda. Se ejecuta con: node scripts/seed.js
+require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
+const mongoose = require('mongoose');
+const Fotografia = require('../models/Fotografia');
+
 const fotos = [
+  {
+    titulo: 'Hacienda con casco histórico (prueba)',
+    url: 'https://picsum.photos/id/1011/600/400',
+    categorias: ['hacienda-rancho', 'zona-rural', 'arquitectura-historica'],
+    ambiente: 'ambos', acceso: 'terraceria',
+    estacionamiento: true, electricidad: true, agua: false,
+    estiloArquitectonico: 'porfiriano', estadoConservacion: 'regular',
+    aislamiento: true, permisos: 'municipal',
+    serviciosCercanos: ['hotel', 'restaurante']
+  },
+  {
+    titulo: 'Plaza y templo del pueblo (prueba)',
+    url: 'https://picsum.photos/id/1015/600/400',
+    categorias: ['pueblo', 'iglesia-templo', 'parque-plaza', 'centro-historico'],
+    ambiente: 'exterior', acceso: 'pavimentado',
+    estacionamiento: true, electricidad: true, agua: true,
+    estiloArquitectonico: 'colonial', estadoConservacion: 'bueno',
+    aislamiento: false, permisos: 'estatal',
+    serviciosCercanos: ['restaurante', 'hospital']
+  },
   {
     titulo: 'Dunas del desierto (prueba)',
     url: 'https://picsum.photos/id/10/600/400',
@@ -146,4 +171,24 @@ const fotos = [
     permisos: 'municipal',
     serviciosCercanos: ['hotel', 'restaurante']
   }
-]
+].map(f => ({ ...f, fuente: 'picsum' })); // marca todas como de prueba, para poder borrarlas después
+
+(async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('Conectado a la base:', mongoose.connection.name, '| host:', mongoose.connection.host);
+
+    const borradas = await Fotografia.deleteMany({ fuente: 'picsum' });
+    console.log(`Borradas ${borradas.deletedCount} fotos de prueba anteriores`);
+
+    await Fotografia.insertMany(fotos); // valida cada foto contra el modelo (enum, etc.)
+    console.log(`Insertadas ${fotos.length} fotos de prueba`);
+
+    const total = await Fotografia.countDocuments();
+    console.log(`Total en la colección fotografias: ${total}`);
+  } catch (err) {
+    console.error('Error en el seed:', err.message);
+  } finally {
+    await mongoose.disconnect();
+  }
+})();
