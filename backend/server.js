@@ -6,6 +6,8 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
+const fotografiasRoutes = require('./routes/fotografias'); // Routes fotografias 
+const verifyToken = require('./middlewares/verifyToken');
 const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
@@ -19,6 +21,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/protected', protectedRoutes);
+app.use('/api/fotografias', verifyToken, fotografiasRoutes); // requiere sesion
 
 app.use(errorHandler);
 
@@ -29,7 +32,3 @@ connectDB().then(() => {
     console.log(`Servidor backend corriendo en el puerto ${PORT}`);
   });
 });
-
-// Pruebas Fase 2
-const fotografiasRoutes = require('./routes/fotografias');
-app.use('/api/fotografias', fotografiasRoutes);
