@@ -5,9 +5,13 @@ import RegisterView from '../views/RegisterView.vue';
 import ProtectedView from '../views/ProtectedView.vue';
 import WikiView from '../views/WikiView.vue';
 
+// importame el nuevo archivo donde vemos las fotos subidas
+import Buscar from '../views/Buscar.vue';
+
 const routes = [
   { path: '/', name: 'home', component: HomeView },
   { path: '/login', name: 'login', component: LoginView },
+  { path: '/buscar', name: 'buscar', component: Buscar },  // nueva ruta de prueba 
   { path: '/registro', name: 'registro', component: RegisterView },
   { path: '/wiki', name: 'wiki', component: WikiView },
   {

@@ -2,8 +2,11 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <router-link class="navbar-brand" to="/">Locaciones</router-link>
-      <div class="navbar-nav ms-auto flex-row align-items-center">
-        <router-link class="nav-link" to="/wiki">Wiki</router-link>
+      <div class="navbar-nav ms-auto flex-row align-items-center">    
+      
+          <router-link class="nav-link" to="/buscar">Buscar</router-link> <!-- nueva ruta frontend para "buscar.vue"   -->
+          
+          <router-link class="nav-link" to="/wiki">Wiki</router-link> 
         <template v-if="estaAutenticado">
           <router-link class="nav-link" to="/protegido">Ruta protegida</router-link>
           <button class="btn btn-outline-light btn-sm ms-2" @click="cerrarSesion">Cerrar sesion</button>
